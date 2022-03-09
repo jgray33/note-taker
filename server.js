@@ -55,8 +55,25 @@ app.post("/api/notes", (req, res) => {
 })
 
 
-
-
+app.delete("/api/notes/:id", (req,res) => {
+    fs.readFile('db/db.json', 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+        else {
+const db = JSON.parse(data)
+const noteId = req.params.id
+for (let i = 0; i < db.length; i++) {
+    if ( noteId == db[i].id) {
+        db.splice([i],1)
+        fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
+            if (err) {
+                console.log(err)
+            } else {
+                return res.json(db)
+            }})}}
+        }
+    })})
 
 
 app.listen(PORT, function(){
